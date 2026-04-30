@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tacos Bruno's - Caja</title>
+  <meta name="description" content="Punto de venta de Tacos Bruno's">
+
+  <style>
+    :root{
+      --rojo:#c11f2d;
+      --rojo-oscuro:#8e1117;
+      --dorado:#f0c35a;
+      --dorado-suave:#ffe2a0;
+      --carbon:#121212;
+      --carbon-2:#1b1b1b;
+      --gris:#b8b8b8;
+      --blanco:#ffffff;
+      --verde:#25D366;
+      --azul:#2d6cdf;
+      --sombra:0 12px 28px rgba(0,0,0,.28);
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--blanco);
+      background:
+        linear-gradient(rgba(10,10,10,.88), rgba(10,10,10,.92)),
+        url("Screenshot 2026-03-24 233218.png") center/cover fixed;
+      line-height:1.5;
+      min-height:100vh;
+    }
+
+    .topbar{
+      background: linear-gradient(90deg, rgba(193,31,45,.96), rgba(120,16,22,.96));
+      text-align:center;
+      padding:24px 16px 18px;
+      border-bottom:3px solid var(--dorado);
+      box-shadow: var(--sombra);
+      backdrop-filter: blur(6px);
+    }
+
+    .logo{
+      width:110px;
+      height:110px;
+      object-fit:cover;
+      border-radius:50%;
+      background: var(--blanco);
+      padding:5px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.35);
+      margin:0 auto 10px;
+      display:block;
+    }
+
+    .brand h1{
+      font-size:3rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      color:var(--dorado-suave);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,.35),
+        0 4px 16px rgba(0,0,0,.30);
+    }
+
+    .brand p{
+      margin-top:6px;
+      color:#fff0c7;
+      font-weight:bold;
+    }
+
+    .wrapper{
+      max-width:900px;
+      margin:24px auto 42px;
+      padding:0 16px;
+    }
+
+    .section{
+      background: rgba(18,18,18,.90);
+      border:1px solid rgba(240,195,90,.20);
+      border-radius:24px;
+      padding:28px;
+      margin-top:24px;
+      box-shadow: var(--sombra);
+    }
+
+    .section-title{
+      text-align:center;
+      color:var(--dorado-suave);
+      font-size:2rem;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .section-sub{
+      text-align:center;
+      color:var(--gris);
+      margin-bottom:22px;
+    }
+
+    .order-box{
+      margin-top:24px;
+      background:var(--carbon-2);
+      border:1px solid rgba(240,195,90,.18);
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 6px 14px rgba(0,0,0,.18);
+    }
+
+    .order-box h3{
+      color:var(--dorado);
+      margin-bottom:14px;
+      font-size:1.4rem;
+    }
+
+    #registroRapido input,
+    #registroRapido select{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(240,195,90,.18);
+      background:#101010;
+      color:#fff;
+      font-size:1rem;
+      outline:none;
+    }
+
+    #registroRapido input:focus,
+    #registroRapido select:focus{
+      border-color:var(--dorado);
+    }
+
+    #cambioManualTexto{
+      margin-top:10px;
+      font-weight:bold;
+      color:var(--dorado-suave);
+    }
+
+    .btn{
+      display:inline-block;
+      text-decoration:none;
+      padding:14px 20px;
+      border-radius:14px;
+      font-size:1rem;
+      font-weight:bold;
+      transition:.2s ease;
+      border:none;
+      cursor:pointer;
+      width:100%;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-blue{
+      background:var(--azul);
+      color:var(--blanco);
+    }
+
+    .btn-red{
+      background:var(--rojo);
+      color:var(--blanco);
+    }
+
+    .order-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .order-actions .btn{
+      flex:1;
+    }
+
+    .pv-stats{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .pv-stat{
+      background:#101010;
+      border:1px solid rgba(240,195,90,.14);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .pv-stat span{
+      display:block;
+      color:var(--gris);
+      font-size:.95rem;
+      margin-bottom:4px;
+    }
+
+    .pv-stat strong{
+      color:var(--dorado-suave);
+      font-size:1.2rem;
+    }
+
+    .historial-ventas{
+      margin-top:10px;
+      max-height:320px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .pedido-item{
+      margin-bottom:8px;
+      padding-bottom:8px;
+      border-bottom:1px dashed rgba(240,195,90,.12);
+    }
+
+    .historial-vacio{
+      color:#f2f2f2;
+    }
+
+    .footer{
+      text-align:center;
+      color:#d1b16e;
+      padding:20px 16px 34px;
+      font-size:.95rem;
+      font-weight:bold;
+    }
+
+    @media (max-width: 640px){
+      .brand h1{
+        font-size:2rem;
+      }
+
+      .logo{
+        width:88px;
+        height:88px;
+      }
+
+      .section{
+        padding:18px;
+      }
+
+      .section-title{
+        font-size:1.6rem;
+      }
+
+      .pv-stats{
+        grid-template-columns:1fr;
+      }
+
+      .order-actions{
+        flex-direction:column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="logo.png" alt="Logo Tacos Bruno's" class="logo">
+      <h1>Tacos Bruno's</h1>
+      <p>Registro rápido de caja · Punto de venta</p>
+    </div>
+  </header>
+
+  <main class="wrapper">
+    <section class="section">
+      <h2 class="section-title">Caja del día</h2>
+      <p class="section-sub">Registra ventas rápidas y controla el corte diario</p>
+
+      <div class="order-box" id="registroRapido">
+        <h3>Registro rápido de caja</h3>
+
+        <label for="totalManual" style="display:block; margin-bottom:8px; color:var(--dorado-suave); font-weight:bold;">
+          Total cobrado
+        </label>
+        <input type="number" id="totalManual" placeholder="Ej: 200" oninput="calcularCambioManual()">
+
+        <label for="metodoManual" style="display:block; margin:14px 0 8px; color:var(--dorado-suave); font-weight:bold;">
+          Método de pago
+        </label>
+        <select id="metodoManual" onchange="cambiarMetodoManual()">
+          <option value="efectivo">Efectivo</option>
+          <option value="card">Card</option>
+        </select>
+
+        <div id="bloquePagoManual">
+          <label for="recibidoManual" style="display:block; margin:14px 0 8px; color:var(--dorado-suave); font-weight:bold;">
+            Monto recibido
+          </label>
+          <input type="number" id="recibidoManual" placeholder="Ej: 300" oninput="calcularCambioManual()">
+          <p id="cambioManualTexto">Cambio: $0</p>
+        </div>
+
+        <div class="order-actions">
+          <button class="btn btn-blue" onclick="guardarVentaManual()">Guardar venta rápida</button>
+        </div>
+      </div>
+
+      <div class="order-box" id="puntoVentaDia">
+        <h3>Punto de venta del día</h3>
+
+        <div class="pv-stats">
+          <div class="pv-stat">
+            <span>Ventas totales</span>
+            <strong id="ventasTotalesDia">$0</strong>
+          </div>
+          <div class="pv-stat">
+            <span>Efectivo</span>
+            <strong id="ventasEfectivoDia">$0</strong>
+          </div>
+          <div class="pv-stat">
+            <span>Card</span>
+            <strong id="ventasCardDia">$0</strong>
+          </div>
+          <div class="pv-stat">
+            <span>Pedidos registrados</span>
+            <strong id="cantidadPedidosDia">0</strong>
+          </div>
+        </div>
+
+        <div class="order-actions">
+          <button class="btn btn-red" onclick="finalizarDia()">Finalizar día</button>
+        </div>
+
+        <div class="historial-ventas" id="historialVentas">
+          <div class="historial-vacio">Aún no hay ventas registradas hoy.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © 2026 Tacos Bruno's · Caja del negocio
+  </footer>
+
+  <script>
+    let ventasDia = JSON.parse(localStorage.getItem('ventasDiaBrunos')) || [];
+
+    function cambiarMetodoManual() {
+      const metodo = document.getElementById('metodoManual').value;
+      const bloque = document.getElementById('bloquePagoManual');
+
+      if (metodo === 'efectivo') {
+        bloque.style.display = 'block';
+      } else {
+        bloque.style.display = 'none';
+        document.getElementById('recibidoManual').value = '';
+        document.getElementById('cambioManualTexto').textContent = 'Cambio: $0';
+      }
+    }
+
+    function calcularCambioManual() {
+      const total = parseFloat(document.getElementById('totalManual').value) || 0;
+      const recibido = parseFloat(document.getElementById('recibidoManual').value) || 0;
+      const metodo = document.getElementById('metodoManual').value;
+
+      if (metodo !== 'efectivo') {
+        document.getElementById('cambioManualTexto').textContent = 'Cambio: $0';
+        return;
+      }
+
+      const cambio = recibido - total;
+      document.getElementById('cambioManualTexto').textContent = 'Cambio: $' + (cambio > 0 ? cambio : 0);
+    }
+
+    function guardarVentaManual() {
+      const total = parseFloat(document.getElementById('totalManual').value) || 0;
+      const metodo = document.getElementById('metodoManual').value;
+      const recibido = parseFloat(document.getElementById('recibidoManual').value) || 0;
+
+      if (total <= 0) {
+        alert('Escribe un total válido.');
+        return;
+      }
+
+      if (metodo === 'efectivo' && recibido < total) {
+        alert('El monto recibido no puede ser menor al total.');
+        return;
+      }
+
+      const venta = {
+        id: Date.now(),
+        fecha: new Date().toLocaleString(),
+        total: total,
+        metodo: metodo,
+        recibido: metodo === 'efectivo' ? recibido : total,
+        cambio: metodo === 'efectivo' ? (recibido - total) : 0,
+        tipo: 'manual'
+      };
+
+      ventasDia.push(venta);
+      localStorage.setItem('ventasDiaBrunos', JSON.stringify(ventasDia));
+
+      renderPuntoVenta();
+
+      document.getElementById('totalManual').value = '';
+      document.getElementById('metodoManual').value = 'efectivo';
+      document.getElementById('recibidoManual').value = '';
+      document.getElementById('cambioManualTexto').textContent = 'Cambio: $0';
+      document.getElementById('bloquePagoManual').style.display = 'block';
+
+      alert('Venta guardada correctamente.');
+    }
+
+    function finalizarDia() {
+      const confirmar = confirm('¿Estás seguro que quieres finalizar día?');
+
+      if (!confirmar) {
+        return;
+      }
+
+      ventasDia = [];
+      localStorage.removeItem('ventasDiaBrunos');
+      renderPuntoVenta();
+
+      document.getElementById('totalManual').value = '';
+      document.getElementById('metodoManual').value = 'efectivo';
+      document.getElementById('recibidoManual').value = '';
+      document.getElementById('cambioManualTexto').textContent = 'Cambio: $0';
+      document.getElementById('bloquePagoManual').style.display = 'block';
+
+      alert('El día fue finalizado correctamente.');
+    }
+
+    function renderPuntoVenta() {
+      const totalVentas = ventasDia.reduce((sum, venta) => sum + venta.total, 0);
+      const totalEfectivo = ventasDia
+        .filter(venta => venta.metodo === 'efectivo')
+        .reduce((sum, venta) => sum + venta.total, 0);
+      const totalCard = ventasDia
+        .filter(venta => venta.metodo === 'card')
+        .reduce((sum, venta) => sum + venta.total, 0);
+
+      document.getElementById('ventasTotalesDia').textContent = '$' + totalVentas;
+      document.getElementById('ventasEfectivoDia').textContent = '$' + totalEfectivo;
+      document.getElementById('ventasCardDia').textContent = '$' + totalCard;
+      document.getElementById('cantidadPedidosDia').textContent = ventasDia.length;
+
+      const historial = document.getElementById('historialVentas');
+
+      if (ventasDia.length === 0) {
+        historial.innerHTML = '<div class="historial-vacio">Aún no hay ventas registradas hoy.</div>';
+        return;
+      }
+
+      historial.innerHTML = ventasDia.slice().reverse().map(venta => `
+        <div class="pedido-item">
+          <strong>${venta.fecha}</strong><br>
+          Registro rápido · ${venta.metodo === 'efectivo' ? 'Efectivo' : 'Card'} · Total: $${venta.total}
+          ${venta.metodo === 'efectivo' ? `<br>Recibido: $${venta.recibido} · Cambio: $${venta.cambio}` : ''}
+        </div>
+      `).join('');
+    }
+
+    renderPuntoVenta();
+    cambiarMetodoManual();
+  </script>
+</body>
+</html>
